@@ -1,16 +1,18 @@
-import { Body, Controller, Get, Query } from '@nestjs/common';
+import { Body, Controller, Get, UseInterceptors } from '@nestjs/common';
 import { AppService } from './app.service';
-import { PromptDTO } from './dtos/main.dto';
 import { CharacterDto } from './dtos/test.dto';
+import { FileInterceptor } from '@nestjs/platform-express';
+import { tmpdir } from 'os';
 
 @Controller()
 export class AppController {
   constructor(private readonly appService: AppService) {}
 
   @Get('/')
-  async getHello(@Query('query') query: PromptDTO): Promise<string[]> {
-    console.log(query);
-    return await this.appService.chatGPT(query.prom2, query.prom3);
+  @UseInterceptors(FileInterceptor('file', { dest: tmpdir() }))
+  async getHello(): Promise<string> {
+    // console.log(query);
+    return await this.appService.chatGPT();
   }
 
   @Get('/test2')
