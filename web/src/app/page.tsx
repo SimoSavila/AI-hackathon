@@ -1,7 +1,7 @@
 export default function Home() {
   return (
     <div>
-      <button>Generate</button>
+      <button className="btn btn-primary">Generate</button>
     </div>
   );
 }
