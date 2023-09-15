@@ -384,7 +384,6 @@ CAPTION: Alternate endings available!
 
 `;
 
-
 export const shortSummary = `Episode #7:
 MH 1: (in a dim-lit room) The humans have hidden a legendary item imbued with terrible powers. Who gets it can win the war between Psychokitties, PsychoMollies, and Mad Hares!
 
@@ -584,3 +583,6 @@ PM: Great. Cannot find them now.
 MH: Keep searching!
 
 CAPTION: Alternate endings available!`;
+
+// Currently mocking database Should be swapped out in final version!
+export const previousEpisodes: string[] = [shortSummary];
