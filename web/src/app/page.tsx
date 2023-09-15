@@ -1,3 +1,7 @@
 export default function Home() {
-  return (<></>);
+  return (
+    <div>
+      <button>Generate</button>
+    </div>
+  );
 }
