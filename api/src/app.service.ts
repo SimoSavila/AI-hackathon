@@ -1,6 +1,13 @@
 import { HttpService } from '@nestjs/axios';
 import { Injectable } from '@nestjs/common';
-import { CHARACTERS, MHInfo, PKInfo, PMInfo, shortSummary } from './data';
+import {
+  CHARACTERS,
+  MHInfo,
+  PKInfo,
+  PMInfo,
+  previousEpisodes,
+  shortSummary,
+} from './data';
 import { firstValueFrom } from 'rxjs';
 import { StoryDto } from './dtos/story.dto';
 
@@ -13,6 +20,8 @@ export class AppService {
       backgroundInfo: [PKInfo, MHInfo, PMInfo],
       characters: CHARACTERS,
       instructions: `Dont create new charaters!`,
+      previousEpisodes: previousEpisodes,
+      mainCharaters: [CHARACTERS[0], CHARACTERS[1]],
     });
 
     const requestData = {
@@ -24,7 +33,7 @@ export class AppService {
         },
         {
           role: 'user',
-          content: `Generate a new story for me like this: ${shortSummary}`,
+          content: `Generate a new episode based on last stories ${previousEpisodes}, use at least 2 charaters in each story and one mainCharater, give detailed scene description and tone`,
         },
       ],
     };
@@ -41,12 +50,51 @@ export class AppService {
           },
         ),
       );
-
-      console.log(result.data.choices[0].message.content);
-      console.log(result.data.error);
-
       const story = result.data.choices[0].message.content;
+      previousEpisodes.push(story);
       return new StoryDto({ story });
+    } catch (error) {
+      console.log('ERROR');
+      console.log(error);
+    }
+  }
+
+  async tweakStory(input: string): Promise<string> {
+    const content = JSON.stringify({
+      backgroundInfo: [PKInfo, MHInfo, PMInfo],
+      characters: CHARACTERS,
+      previousEpisodes: previousEpisodes.pop(),
+      mainCharaters: [CHARACTERS[0], CHARACTERS[1]],
+    });
+    const requestData = {
+      model: 'gpt-4', // Adjust the model name as per the latest model from OpenAI
+      messages: [
+        {
+          role: 'system',
+          content: content,
+        },
+        {
+          role: 'user',
+          content: input,
+        },
+      ],
+    };
+
+    try {
+      const result = await firstValueFrom(
+        this.httpService.post(
+          'https://api.openai.com/v1/chat/completions',
+          requestData,
+          {
+            headers: {
+              Authorization: `Bearer <API-TOKEN>`,
+            },
+          },
+        ),
+      );
+      const story = result.data.choices[0].message.content;
+      previousEpisodes.push(story);
+      return story;
     } catch (error) {
       console.log('ERROR');
       console.log(error);
