@@ -14,10 +14,14 @@ export default function Home() {
   return (
     <div className="container">
       {
-        stories.map((story, index) =>
-          <div className="row" key={`${index}`}>
+        stories.map((story, storyIdx) =>
+          <div className="row" key={`${storyIdx}`}>
             <div className="col-sm-6 mx-auto">
-              <p>{story}</p>
+              {
+                story.split('\n').map((paragraph, paragraphIdx) => (
+                  <p key={`${storyIdx}-${paragraphIdx}`}>{paragraph}</p>
+                ))
+              }
             </div>
           </div>
         )
