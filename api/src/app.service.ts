@@ -50,6 +50,8 @@ export class AppService {
           },
         ),
       );
+      const story = result.data.choices[0].message.content;
+      previousEpisodes.push(story);
       return new StoryDto({ story });
     } catch (error) {
       console.log('ERROR');
