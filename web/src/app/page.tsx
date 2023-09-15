@@ -15,7 +15,7 @@ export default function Home() {
     <div className="container">
       {
         stories.map((story, storyIdx) =>
-          <div className="row" key={`${storyIdx}`}>
+          <div className="my-3 row" key={`${storyIdx}`}>
             <div className="col-sm-6 mx-auto">
               <div className="card">
                 <div className="card-body">
@@ -31,7 +31,7 @@ export default function Home() {
         )
       }
 
-      <div className="row">
+      <div className="my-3 row">
         <div className="col-sm-6 d-flex justify-content-center mx-auto">
           <button className="btn btn-primary" onClick={genStory}>Generate</button>
         </div>
