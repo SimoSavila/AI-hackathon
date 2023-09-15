@@ -17,11 +17,15 @@ export default function Home() {
         stories.map((story, storyIdx) =>
           <div className="row" key={`${storyIdx}`}>
             <div className="col-sm-6 mx-auto">
-              {
-                story.split('\n').map((paragraph, paragraphIdx) => (
-                  <p key={`${storyIdx}-${paragraphIdx}`}>{paragraph}</p>
-                ))
-              }
+              <div className="card">
+                <div className="card-body">
+                  {
+                    story.split('\n').map((paragraph, paragraphIdx) => (
+                      <p key={`${storyIdx}-${paragraphIdx}`}>{paragraph}</p>
+                    ))
+                  }
+                </div>
+              </div>
             </div>
           </div>
         )
