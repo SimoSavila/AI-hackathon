@@ -2,12 +2,13 @@ import { HttpService } from '@nestjs/axios';
 import { Injectable } from '@nestjs/common';
 import { CHARACTERS, MHInfo, PKInfo, PMInfo, shortSummary } from './data';
 import { firstValueFrom } from 'rxjs';
+import { StoryDto } from './dtos/story.dto';
 
 @Injectable()
 export class AppService {
   constructor(private readonly httpService: HttpService) {}
 
-  async chatGPT(): Promise<string> {
+  async genStory(): Promise<StoryDto> {
     const content = JSON.stringify({
       backgroundInfo: [PKInfo, MHInfo, PMInfo],
       characters: CHARACTERS,
@@ -44,7 +45,8 @@ export class AppService {
       console.log(result.data.choices[0].message.content);
       console.log(result.data.error);
 
-      return result.data.choices[0].message.content;
+      const story = result.data.choices[0].message.content;
+      return new StoryDto({ story });
     } catch (error) {
       console.log('ERROR');
       console.log(error);
